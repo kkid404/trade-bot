@@ -1,6 +1,7 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
 
 class Keyboard:
+    back = KeyboardButton("Back")
 
     def start_kb():
         keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -17,10 +18,12 @@ class Keyboard:
         keyboard.add(language, signals, depth, back)
         return keyboard
 
-    def language_kb():
+    def language_kb(back = None):
         keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
         russian = KeyboardButton("🇷🇺")
         english = KeyboardButton("🇺🇸")
-        back = KeyboardButton("Back")
-        keyboard.add(russian, english).row(back)
+        if(back):
+            keyboard.add(russian, english).row(back)
+        else:
+            keyboard.add(russian, english)
         return keyboard

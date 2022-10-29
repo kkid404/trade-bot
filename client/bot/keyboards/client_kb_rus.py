@@ -2,6 +2,8 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardBut
 
 class KeyboardRus:
 
+    back = KeyboardButton("Назад")
+
     def start_kb():
         keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
         settings = KeyboardButton("Настройки")
@@ -17,10 +19,12 @@ class KeyboardRus:
         keyboard.add(language, signals, depth, back)
         return keyboard
 
-    def language_kb():
-        keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    def language_kb(back = None):
+        keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
         russian = KeyboardButton("🇷🇺")
         english = KeyboardButton("🇺🇸")
-        back = KeyboardButton("Назад")
-        keyboard.add(russian, english).row(back)
+        if(back):
+            keyboard.add(russian, english).row(back)
+        else:
+            keyboard.add(russian, english)
         return keyboard

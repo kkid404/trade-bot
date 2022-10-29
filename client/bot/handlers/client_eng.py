@@ -11,6 +11,13 @@ from keyboards.client_kb_eng import Keyboard
 async def command_start(message: types.Message, kb = Keyboard):
     await bot.send_message(
     message.from_user.id,
+    "Select the language in which you would like to receive information",
+    reply_markup=kb.language_kb())
+
+@dp.message_handler(text="🇺🇸")
+async def command_language(message: types.Message, kb = Keyboard):
+    await bot.send_message(
+    message.from_user.id,
     "Hello! I am a bot to automatically buy and"
     " sell cryptocurrency on the binance spot market."
     " At the moment I can’t do anything, but very soon "
@@ -29,11 +36,12 @@ async def command_language(message: types.Message, kb = Keyboard):
     await bot.send_message(
     message.from_user.id,
     "Select the language in which you would like to receive information",
-    reply_markup=kb.language_kb())
+    reply_markup=kb.language_kb(kb.back))
 
-@dp.message_handler(text="🇺🇸")
+@dp.message_handler(text="Back")
 async def command_language(message: types.Message, kb = Keyboard):
     await bot.send_message(
     message.from_user.id,
-    "Changes saved!",
+    "Okay!",
     reply_markup=kb.start_kb())
+
