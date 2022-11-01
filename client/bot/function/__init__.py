@@ -1,1 +1,1 @@
-from function.lang import lang
+from function import lang
