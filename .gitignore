@@ -2,3 +2,4 @@ venv
 settings.ini
 __pycache__
 log.txt
+data.db
