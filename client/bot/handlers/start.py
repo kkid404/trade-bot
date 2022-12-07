@@ -29,17 +29,19 @@ async def select_lang(message: types.Message, state: FSMContext, kb = Keyboard()
         user_lang = data["lang"]
     
     if user_lang == "🇺🇸":
-        user = User(message.from_user.id, "eng")
+        user = User(message.from_user.id, message.from_user.username, "eng")
     
     elif user_lang == "🇷🇺":
-        user = User(message.from_user.id, "rus")
+        user = User(message.from_user.id, message.from_user.username, "rus")
     try:
         await state.finish()
 
         if(not db.chek_user(int(user.id))):
-            db.add_user(int(user.id), user.lang)
+            db.add_user(int(user.id), user.username, user.lang)
         if(user.lang != db.get_lang(int(user.id))):
             db.update_lang(user.lang, int(user.id))
+        if(user.username != db.get_username(int(user.id))):
+            db.update_username(user.username, int(user.id))
         
         await bot.send_message(
             message.from_user.id, 

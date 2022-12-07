@@ -1,32 +1,52 @@
-import sqlite3 as sq
+from loader import USERNAME, HOST, PASSWORD, DATABASE
+import pymysql
 
 class CallDb():
 
     def __init__(self):
-        self.base = sq.connect('data.db')
-        self.cur = self.base.cursor()
+        self.connection = pymysql.connect(
+            host=HOST,
+            user=USERNAME,
+            password=PASSWORD,
+            database=DATABASE,
+            cursorclass=pymysql.cursors.DictCursor,
+        )
 
-    def sql_start(self):
-        if self.base:
-            print("Data successfully connect!")
-        self.cur.execute('CREATE TABLE IF NOT EXISTS user(telegram_id INTEGER PRIMARY KEY, lang TEXT)')
-        self.base.commit()
-
-    def add_user(self, telegram_id, lang):
-        self.cur.execute("INSERT INTO user VALUES (?, ?)", (telegram_id, lang))
-        self.base.commit()
-
+    def add_user(self, telegram_id, username, lang):
+        with self.connection.cursor() as cursor:
+            cursor.execute("INSERT INTO `user` (telegram_id, username, lang)\
+                            VALUES (%s, %s, %s)", (telegram_id, username, lang))
+        self.connection.commit()
+    
     def chek_user(self, telegram_id):
-        res =  self.cur.execute(f'SELECT telegram_id FROM user WHERE telegram_id == {telegram_id}').fetchone()
-        if res:
-            return True
-        else:
-            return False
-
-    def update_lang(self, lang, user):
-        self.cur.execute("UPDATE user SET lang = ? WHERE telegram_id = ?", (lang, user))
-        self.base.commit()
-
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT telegram_id FROM `user` WHERE telegram_id = %s",
+            (telegram_id))
+            res = cursor.fetchone()
+            return res["telegram_id"]
+    
+    def update_lang(self, lang, telegram_id):
+        with self.connection.cursor() as cursor:
+            cursor.execute("UPDATE `user` SET lang = %s WHERE telegram_id = %s",
+            (lang, telegram_id))
+        self.connection.commit()
+    
     def get_lang(self, telegram_id):
-        res =  self.cur.execute(f'SELECT lang FROM user WHERE telegram_id == {telegram_id}').fetchone()
-        return res[0]
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT lang FROM `user` WHERE telegram_id = %s", 
+            (telegram_id))
+            res = cursor.fetchone()
+            return res["lang"]
+
+    def get_username(self, telegram_id):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT username FROM `user` WHERE telegram_id = %s",
+            (telegram_id))
+            res = cursor.fetchone()
+            return res["username"]
+
+    def update_username(self, username, telegram_id):
+        with self.connection.cursor() as cursor:
+            cursor.execute("UPDATE `user` SET username = %s WHERE telegram_id = %s",
+            (username, telegram_id))
+        self.connection.commit()
