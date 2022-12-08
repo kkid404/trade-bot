@@ -9,7 +9,7 @@ from data.db import CallDb
 
 @dp.message_handler(content_types=["text"])
 async def command_settings(message: types.Message, kb = Keyboard(), db = CallDb()):
-    user = User(message.from_user.id, db.get_lang(int(message.from_user.id)))
+    user = User(message.from_user.id, message.from_user.username, db.get_lang(int(message.from_user.id)))
     
     if message.text == lang[user.lang]["keyboards"]["settings"]:
         await bot.send_message(
@@ -38,8 +38,8 @@ async def command_settings(message: types.Message, kb = Keyboard(), db = CallDb(
     if message.text == lang[user.lang]["keyboards"]["volatil"]:
             await bot.send_message(
                 user.id,
-                lang[user.lang]["messages"]["progress"],
-                reply_markup=kb.settings_kb(user.lang)
+                lang[user.lang]["messages"]["volatil"],
+                reply_markup=kb.volatil_kb(user.lang)
             )
 
     if message.text == lang[user.lang]["keyboards"]["depth"]:

@@ -9,6 +9,11 @@ config = configparser.ConfigParser()
 config.read("settings.ini")
 TOKEN = config["BOT"]["TOKEN"]
 ADMIN = config["BOT"]["ADMIN"]
+HOST = config["DB"]["HOST"]
+USERNAME = config["DB"]["USERNAME"]
+PASSWORD = config["DB"]["PASSWORD"]
+DATABASE = config["DB"]["DATABASE"]
+
 if ',' in ADMIN:
     ADMIN = ADMIN.split(",")
 else:
