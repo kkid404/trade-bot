@@ -6,7 +6,7 @@ from aiogram.dispatcher.filters import Text
 from loader import bot, dp
 from keyboards.client_kb import Keyboard
 from classes import User
-from function.lang import lang
+from function.lang import lang, chek_lang
 from states import LangStates
 from data.db import CallDb
 
@@ -28,11 +28,9 @@ async def select_lang(message: types.Message, state: FSMContext, kb = Keyboard()
         data["lang"] = message.text
         user_lang = data["lang"]
     
-    if user_lang == "🇺🇸":
-        user = User(message.from_user.id, message.from_user.username, "eng")
-    
-    elif user_lang == "🇷🇺":
-        user = User(message.from_user.id, message.from_user.username, "rus")
+    if chek_lang(data["lang"]):
+        user_lang = chek_lang(data["lang"])
+        user = User(message.from_user.id, message.from_user.username, user_lang)
     try:
         await state.finish()
 

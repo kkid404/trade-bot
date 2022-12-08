@@ -38,8 +38,8 @@ async def command_settings(message: types.Message, kb = Keyboard(), db = CallDb(
     if message.text == lang[user.lang]["keyboards"]["volatil"]:
             await bot.send_message(
                 user.id,
-                lang[user.lang]["messages"]["progress"],
-                reply_markup=kb.settings_kb(user.lang)
+                lang[user.lang]["messages"]["volatil"],
+                reply_markup=kb.volatil_kb(user.lang)
             )
 
     if message.text == lang[user.lang]["keyboards"]["depth"]:
